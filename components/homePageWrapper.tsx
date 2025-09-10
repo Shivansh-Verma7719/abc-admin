@@ -22,8 +22,6 @@ interface DashboardStats {
   totalTeamMembers: number;
   activeTeamMembers: number;
   totalPhotos: number;
-  totalQueries: number;
-  pendingQueries: number;
   totalTeams: number;
 }
 
@@ -48,8 +46,6 @@ export default function HomePageWrapper({ user }: { user: JwtClaims | null }) {
         peopleResult,
         activePeopleResult,
         photosResult,
-        queriesResult,
-        pendingQueriesResult,
         teamsResult
       ] = await Promise.all([
         supabase.from('events').select('id', { count: 'exact', head: true }),
@@ -57,8 +53,6 @@ export default function HomePageWrapper({ user }: { user: JwtClaims | null }) {
         supabase.from('people').select('id', { count: 'exact', head: true }),
         supabase.from('people').select('id', { count: 'exact', head: true }).eq('is_active', true),
         supabase.from('photos').select('id', { count: 'exact', head: true }),
-        supabase.from('query').select('id', { count: 'exact', head: true }),
-        supabase.from('query').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
         supabase.from('teams').select('id', { count: 'exact', head: true })
       ]);
 
@@ -68,8 +62,6 @@ export default function HomePageWrapper({ user }: { user: JwtClaims | null }) {
         totalTeamMembers: peopleResult.count || 0,
         activeTeamMembers: activePeopleResult.count || 0,
         totalPhotos: photosResult.count || 0,
-        totalQueries: queriesResult.count || 0,
-        pendingQueries: pendingQueriesResult.count || 0,
         totalTeams: teamsResult.count || 0,
       });
     } catch (error) {
@@ -173,20 +165,11 @@ export default function HomePageWrapper({ user }: { user: JwtClaims | null }) {
             >
               Manage Photos
             </Button>
-            <Button
-              as={Link}
-              href="/queries"
-              color="danger"
-              variant="flat"
-              size="lg"
-            >
-              Manage Queries
-            </Button>
           </div>
         </div>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <KPICard
             title="Events"
             value={stats?.totalEvents || 0}
@@ -236,23 +219,6 @@ export default function HomePageWrapper({ user }: { user: JwtClaims | null }) {
                 label: "Add Photo",
                 href: "/photos/create",
                 variant: "light"
-              }
-            }}
-          />
-
-          <KPICard
-            title="Queries"
-            value={stats?.totalQueries || 0}
-            label="Total"
-            icon={<IconQuestionMark />}
-            color="danger"
-            loading={loading}
-            bottomContent={{
-              type: "chip",
-              label: "Pending",
-              chip: {
-                label: stats?.pendingQueries || 0,
-                color: stats?.pendingQueries && stats.pendingQueries > 0 ? "danger" : "success"
               }
             }}
           />
