@@ -95,7 +95,7 @@ export default function HomePageWrapper({ user }: { user: JwtClaims | null }) {
       <div className="flex flex-col items-center justify-center min-h-screen">
         <Card className="max-w-7xl mx-4">
           <CardHeader className="text-center">
-            <h1 className="text-3xl font-bold text-primary">IEEE Admin</h1>
+            <h1 className="text-3xl font-bold text-primary">ABC Admin</h1>
           </CardHeader>
           <CardBody className="text-center">
             <p className="text-gray-600 dark:text-gray-400 mb-6">
@@ -103,7 +103,7 @@ export default function HomePageWrapper({ user }: { user: JwtClaims | null }) {
             </p>
             <Button
               color="primary"
-              variant="solid"
+              variant="flat"
               size="lg"
               onPress={handleLogin}
               startContent={
@@ -129,7 +129,7 @@ export default function HomePageWrapper({ user }: { user: JwtClaims | null }) {
             Hello, {user?.user_metadata?.full_name?.split(" ")[0]}! 👋
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Welcome to your IEEE Admin Dashboard
+            Welcome to your ABC Admin Dashboard
           </p>
         </div>
 

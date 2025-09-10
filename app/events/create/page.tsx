@@ -132,7 +132,7 @@ export default function CreateEventPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-24">
+    <div className="container max-w-2xl mx-auto px-4 py-24">
       <h1 className="text-center text-5xl font-bold text-[#302f2f] mb-8">
         Create New Event
       </h1>
@@ -187,11 +187,18 @@ export default function CreateEventPage() {
               onChange={handleInputChange}
               isRequired
             />
+            <Input
+              label="Department"
+              name="department"
+              value={event.department || ""}
+              isRequired
+              onChange={handleInputChange}
+            />
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Event Image
               </label>
-              <div className="mt-1 h-[30rem] mx-auto w-full md:w-[30%] md:h-[46.25rem]">
+              <div className="mt-1 h-[30rem] mx-auto w-full md:w-[80%] md:h-[46.25rem]">
                 {imagePreviewUrl ? (
                   <motion.div className="rounded-[1.75rem] bg-gray-100 dark:bg-neutral-900 h-[30rem] w-full md:h-[46.25rem] overflow-hidden flex flex-col items-start justify-start relative z-10">
                     <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />

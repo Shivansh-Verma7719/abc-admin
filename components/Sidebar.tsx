@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { JwtClaims } from "@/types/supabase";
 import Image from "next/image";
 import Link from "next/link";
-import ABCLogo from "@/public/images/logo.png";
+import ABCLogo from "@/public/images/abc-logo-small.png";
 import { usePermissions, PERMISSIONS } from "@/lib/permissions";
 
 interface SidebarDemoProps {
