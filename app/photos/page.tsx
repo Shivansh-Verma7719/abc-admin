@@ -33,7 +33,6 @@ export default function PhotosPage() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [viewMode, setViewMode] = useState<'masonry' | 'grid'>('masonry');
   const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalClose } = useDisclosure();
   const [selectedPhotoId, setSelectedPhotoId] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -145,7 +144,7 @@ export default function PhotosPage() {
     <RequirePermission permission={PERMISSIONS.PHOTOS}>
       <div className="min-h-screen w-full">
         {/* Search and Filter Controls */}
-        <section className="pt-20 pb-10">
+        <section className="pb-10">
           <div className="max-w-7xl mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -179,17 +178,6 @@ export default function PhotosPage() {
                     }}
                   />
                 </div>
-
-                <Button
-                  variant={viewMode === 'grid' ? 'solid' : 'bordered'}
-                  color={viewMode === 'grid' ? 'primary' : 'default'}
-                  size="lg"
-                  onPress={() => setViewMode(viewMode === 'masonry' ? 'grid' : 'masonry')}
-                  startContent={viewMode === 'masonry' ? <Grid3X3 className="w-5 h-5" /> : <LayoutGrid className="w-5 h-5" />}
-                  className={viewMode === 'grid' ? 'bg-abc-blue text-white' : ''}
-                >
-                  {viewMode === 'masonry' ? 'Grid View' : 'Masonry View'}
-                </Button>
 
                 <Button
                   as={Link}
@@ -236,22 +224,21 @@ export default function PhotosPage() {
 
               {/* Photos Display */}
               {filteredPhotos.length > 0 ? (
-                viewMode === 'masonry' ? (
-                  <div className="relative">
-                    <Masonry
-                      items={masonryItems}
-                      scaleOnHover={true}
-                      hoverScale={0.98}
-                      blurToFocus={true}
-                      animateFrom="bottom"
-                      duration={0.8}
-                      stagger={0.08}
-                      ease="power3.out"
-                      onItemClick={handleItemClick}
-                    />
+                <div className="relative">
+                  <Masonry
+                    items={masonryItems}
+                    scaleOnHover={true}
+                    hoverScale={0.98}
+                    blurToFocus={true}
+                    animateFrom="bottom"
+                    duration={0.8}
+                    stagger={0.08}
+                    ease="power3.out"
+                    onItemClick={handleItemClick}
+                  />
 
-                    {/* Admin Actions Overlay for Masonry */}
-                    <style jsx global>{`
+                  {/* Admin Actions Overlay for Masonry */}
+                  <style jsx global>{`
                       .masonry-item {
                         position: relative;
                       }
@@ -269,81 +256,7 @@ export default function PhotosPage() {
                         z-index: 10;
                       }
                     `}</style>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {filteredPhotos.map((photo, index) => (
-                      <motion.div
-                        key={photo.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.05 }}
-                        viewport={{ once: true }}
-                        className="relative group"
-                      >
-                        <Card className="h-full w-full overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
-                          <div className="relative h-64 overflow-hidden">
-                            <Image
-                              src={photo.image_url}
-                              alt={photo.caption || "Photo"}
-                              fill
-                              className="object-cover transition-transform duration-300 group-hover:scale-110"
-                            />
-
-                            {/* Admin Actions Overlay */}
-                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
-                              <Button
-                                isIconOnly
-                                size="sm"
-                                color="default"
-                                variant="flat"
-                                className="bg-white/90 backdrop-blur-sm shadow-md"
-                                onPress={() => window.open(photo.image_url, '_blank')}
-                              >
-                                <IconEye size={16} />
-                              </Button>
-                              <Button
-                                isIconOnly
-                                size="sm"
-                                color="primary"
-                                variant="flat"
-                                className="bg-white/90 backdrop-blur-sm shadow-md"
-                                as={Link}
-                                href={`/photos/edit/${photo.id}`}
-                              >
-                                <IconEdit size={16} />
-                              </Button>
-                              <Button
-                                isIconOnly
-                                size="sm"
-                                color="danger"
-                                variant="flat"
-                                className="bg-white/90 backdrop-blur-sm shadow-md"
-                                onPress={() => handleDelete(photo.id)}
-                              >
-                                <IconTrash size={16} />
-                              </Button>
-                            </div>
-
-                            {/* Gradient Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                          </div>
-
-                          <CardBody className="p-4">
-                            <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
-                              {photo.caption || "Untitled Photo"}
-                            </h3>
-                            {photo.created_at && (
-                              <p className="text-sm text-gray-500 mt-1">
-                                {new Date(photo.created_at).toLocaleDateString()}
-                              </p>
-                            )}
-                          </CardBody>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </div>
-                )
+                </div>
               ) : (
                 <motion.div
                   initial={{ opacity: 0 }}

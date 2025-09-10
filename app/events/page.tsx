@@ -126,7 +126,7 @@ const EventsPage = () => {
     <RequirePermission permission={PERMISSIONS.EVENTS}>
       <div className="min-h-screen w-full">
         {/* Search and Filter Controls */}
-        <section className="pt-20 pb-10">
+        <section className="pb-10">
           <div className="max-w-7xl mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
